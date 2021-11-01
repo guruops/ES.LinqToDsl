@@ -1,6 +1,6 @@
-﻿using Nest;
-using System;
+﻿using System;
 using System.Linq.Expressions;
+using Nest;
 
 namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest
 {
@@ -11,7 +11,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest
             QueryBase result;
             if (isToLower)
             {
-                left = ((MethodCallExpression)left).Object;
+                left = ((MethodCallExpression) left).Object;
             }
             Extract(left, right, out Field field, out object value, isToLower);
             if (value == null)

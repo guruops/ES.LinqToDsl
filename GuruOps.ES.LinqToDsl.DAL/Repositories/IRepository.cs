@@ -1,13 +1,13 @@
-﻿using GuruOps.ES.LinqToDsl.Models;
-using GuruOps.ES.LinqToDsl.Models.QueryModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using GuruOps.ES.LinqToDsl.Models;
+using GuruOps.ES.LinqToDsl.Models.QueryModels;
 
 namespace GuruOps.ES.LinqToDsl.DAL.Repositories
 {
-    public interface IRepository<T> where T : Document
+    public interface IRepository<T> where T : DocumentBase
     {
         Task<Result> UpsertAsync(T newDocument, T currentDocument, bool disableAudit = false);
 

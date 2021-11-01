@@ -1,11 +1,11 @@
-﻿using Nest;
-using Newtonsoft.Json.Converters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using Nest;
+using Newtonsoft.Json.Converters;
 
 namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest
 {
@@ -15,15 +15,15 @@ namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest
         {
             EnsureSupportableMember(node);
             node = ClearExpressionIfItNullable(node);
-            var fieldName = string.Join(".", node.ToString().Split('.').Skip(1)).ToCamelCase();
-            if ((!isToLower && (IsStringProperty(node) || IsEnumerableString(node) || IsStringEnum(node)))
+            var fieldName = string.Join(".",node.ToString().Split('.').Skip(1)).ToCamelCase();
+            if ((!isToLower && (IsStringProperty(node) || IsEnumerableString(node) || IsStringEnum(node))) 
                 || (isToLower && node.Member.Name.ToLower().Contains("email")))
             {
                 fieldName = $"{fieldName}.keyword";
             }
             return new Field(fieldName);
         }
-
+        
         private static string ToCamelCase(this string name)
         {
             var results = new List<string>();
@@ -32,7 +32,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest
                 var firstLetter = property.Substring(0, 1).ToLower();
                 results.Add($"{firstLetter}{property.Substring(1)}");
             }
-            return string.Join('.', results);
+            return string.Join(".", results);
         }
 
         private static MemberExpression ClearExpressionIfItNullable(MemberExpression node)
@@ -42,7 +42,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest
                 memberType.IsGenericType && memberType.GetGenericTypeDefinition() == typeof(Nullable<>) &&
                 node.Member.Name == "Value")
             {
-                node = (MemberExpression)node.Expression;
+                node = (MemberExpression) node.Expression;
             }
             return node;
         }

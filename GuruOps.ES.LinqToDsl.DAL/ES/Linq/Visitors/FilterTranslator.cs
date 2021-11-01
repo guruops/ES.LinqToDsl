@@ -1,10 +1,10 @@
-﻿using GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest;
-using GuruOps.ES.LinqToDsl.DAL.Models;
-using Nest;
-using System;
+﻿using System;
 using System.Collections;
 using System.Linq;
 using System.Linq.Expressions;
+using GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest;
+using GuruOps.ES.LinqToDsl.Models;
+using Nest;
 
 namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Visitors
 {
@@ -60,7 +60,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Visitors
                         return node;
                     }
                     throw CreateNotSupportedException($"We support only Contains of {nameof(Enumerable)} and build-in implementation of ICollection.");
-
+                
                 case "Any":
                     if (node.Arguments.Count > 1)
                     {
@@ -71,7 +71,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Visitors
                         VisitAny(node.Arguments[0]);
                     }
                     return node;
-
+                
                 default:
                     throw CreateNotSupportedException($"We don't support method {node.Method.Name} yet.");
             }
@@ -139,32 +139,32 @@ namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Visitors
 
         private void VisitAny(Expression property, Expression lambdaExpression)
         {
-            var lambda = (LambdaExpression)lambdaExpression;
-            var body = lambda.Body;
-            if (body is BinaryExpression && ((BinaryExpression)body).Method.Name == "op_Equality")
+            var lambda = (LambdaExpression) lambdaExpression;
+            var body = lambda.Body;           
+            if (body is BinaryExpression && ((BinaryExpression) body).Method.Name == "op_Equality")
             {
-                _query = _anyEqualityQueryTranslator.Create(property, ((BinaryExpression)body).Left, ((BinaryExpression)body).Right);
+                _query = _anyEqualityQueryTranslator.Create(property, ((BinaryExpression) body).Left, ((BinaryExpression) body).Right);
                 return;
             }
             if (body is MethodCallExpression && ((MethodCallExpression)body).Method.Name == "Contains")
             {
-
+               
                 _query = _anyEqualityQueryTranslator.Create(property, ((MethodCallExpression)body).Arguments[0], ((MethodCallExpression)body).Object);
-                return;
+                return;                
             }
 
             throw CreateNotSupportedException($"Any method not support operation {((BinaryExpression)body).Method.Name}");
         }
-
+        
         private void VisitAny(Expression property)
-        {
-            _query = _anyEqualityQueryTranslator.Create(property);
-            return;
+        {            
+                _query = _anyEqualityQueryTranslator.Create(property);
+                return;
         }
 
         private void VisitContains(Expression source, Expression match)
         {
-            var isToLower = (match is MethodCallExpression && ((MethodCallExpression)match).Method.Name == "ToLower");
+            var isToLower = (match is MethodCallExpression && ((MethodCallExpression) match).Method.Name == "ToLower");
             if (source is ConstantExpression && (match is MemberExpression || isToLower))
             {
                 var values = ((IEnumerable)((ConstantExpression)source).Value)

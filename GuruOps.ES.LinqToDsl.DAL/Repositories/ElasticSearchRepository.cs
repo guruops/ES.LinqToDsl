@@ -1,14 +1,4 @@
-﻿using Elasticsearch.Net;
-using GuruOps.ES.LinqToDsl.DAL.Attributes;
-using GuruOps.ES.LinqToDsl.DAL.ES.Helpers;
-using GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest;
-using GuruOps.ES.LinqToDsl.DAL.ES.Linq.Visitors;
-using GuruOps.ES.LinqToDsl.Models;
-using GuruOps.ES.LinqToDsl.Models.Exceptions;
-using GuruOps.ES.LinqToDsl.Models.QueryModels;
-using Microsoft.Extensions.Logging;
-using Nest;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +8,22 @@ using System.Reflection;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Elasticsearch.Net;
+using GuruOps.ES.LinqToDsl.DAL.ES.Helpers;
+using GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest;
+using GuruOps.ES.LinqToDsl.DAL.ES.Linq.Visitors;
+using GuruOps.ES.LinqToDsl.Models;
+using GuruOps.ES.LinqToDsl.Models.Attributes;
+using GuruOps.ES.LinqToDsl.Models.Exceptions;
+using GuruOps.ES.LinqToDsl.Models.QueryModels;
+using Microsoft.Extensions.Logging;
+using Nest;
 using QueryBase = Nest.QueryBase;
 using Result = GuruOps.ES.LinqToDsl.Models.QueryModels.Result;
 
 namespace GuruOps.ES.LinqToDsl.DAL.Repositories
 {
-    public class ElasticSearchRepository<T> : IRepository<T> where T : Document
+    public class ElasticSearchRepository<T> : IRepository<T> where T : DocumentBase
     {
         private readonly IElasticSearchSettings _elasticSearchSettingsSettings;
         private readonly ILogger<ElasticSearchRepository<T>> _logger;
@@ -43,17 +43,17 @@ namespace GuruOps.ES.LinqToDsl.DAL.Repositories
 
         public async Task<Result> UpsertAsync(T newDocument, T currentDocument, bool disableAudit = false)
         {
-            var request = new UpdateRequest<T, T>(newDocument.DocumentType, newDocument.Id)
+            var request = new UpdateRequest<T, T>(newDocument.Id)
             {
                 Doc = newDocument,
                 DocAsUpsert = true,
                 Refresh = Refresh.WaitFor,
-
+                
             };
 
             newDocument.Modified = DateTime.UtcNow;
             var response = await _elasticClient.UpdateAsync(request);
-
+            
             Result result = new Result
             {
                 Output = newDocument,
@@ -138,11 +138,11 @@ namespace GuruOps.ES.LinqToDsl.DAL.Repositories
 
             var query = filterQuery && searchQuery && CreateDeletedQuery(includeDeleted);
             var result = new ResultList();
-            var request = new SearchRequest(typeof(T));
+            var request = new SearchRequest( typeof(T));
             if (isCompositeRequest)
             {
                 var agg = AggregationHelpers.GetAggregation(pageTake, pageSkip, query, fieldSort, isDocumentSourceNeeded: true);
-                request.Aggregations = new AggregationDictionary { { "duplicateCount", agg } };
+                request.Aggregations = new AggregationDictionary {{"duplicateCount", agg}};
                 request.Size = 0;
             }
             else
@@ -180,7 +180,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.Repositories
                         Output = isCompositeRequest ? GetDocumentsFromAggregation(response)?.ToList() : response.Documents.ToList<object>(),
                         ContinuationToken = response.ScrollId,
                         Exception = result.Exception
-                    };
+                    };                    
                     break;
                 }
                 catch (Exception e)
@@ -197,7 +197,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.Repositories
             return result;
 
         }
-
+        
         public Task<Result> DeleteAsync(T document, bool disableAudit = false)
         {
             // TODO: check caller if currentDocument can be pass
@@ -218,7 +218,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.Repositories
             QueryBase includeDeletedQuery = CreateDeletedQuery(includeDeleted);
             QueryBase filterQuery = CreateFilterQuery(predicate);
             QueryBase searchQuery = CreateSearchQuery(searchText);
-            QueryBase query = includeDeletedQuery && filterQuery && searchQuery;
+            QueryBase query = includeDeletedQuery && filterQuery && searchQuery;            
             if (!isCompositeRequest)
             {
                 //TODO!!!!!!!!!!!!!!!!!
@@ -375,7 +375,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.Repositories
                     fieldSort
                 };
             }
-
+            
             ISearchResponse<T> response = await _elasticClient
                 .SearchAsync<T>(request)
                 .ConfigureAwait(false);
@@ -389,7 +389,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.Repositories
             if (!response.IsValid)
             {
                 result.Exception = new ElasticSearchRepositoryException(response.OriginalException, _elasticClient.RequestResponseSerializer.SerializeToString(request));
-                _logger.LogError(response.OriginalException?.Message, response.OriginalException);
+                _logger.LogError( response.OriginalException.Message, response.OriginalException);
             }
             return result;
         }

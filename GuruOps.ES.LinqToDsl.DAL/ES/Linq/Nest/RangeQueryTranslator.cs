@@ -1,7 +1,7 @@
-﻿using Nest;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using Nest;
 
 namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest
 {

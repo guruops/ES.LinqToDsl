@@ -1,7 +1,7 @@
-﻿using Nest;
-using System;
+﻿using System;
 using System.Collections;
 using System.Linq.Expressions;
+using Nest;
 
 namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest
 {
@@ -12,16 +12,16 @@ namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest
             QueryBase result = null;
             Extract(property, left, right, out Field field, out object value);
 
-
+            
             if (value == null)
             {
                 result = !new ExistsQuery { Field = field };
             }
             else
             {
-                if (value is IEnumerable && !(value is string))
-                {
-                    foreach (var item in (IEnumerable)value)
+                if(value is IEnumerable && !(value is string))
+                {                     
+                    foreach(var item in (IEnumerable)value)
                     {
                         result = result || new TermQuery { Field = field, Value = item };
                     }
@@ -30,7 +30,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest
                 {
                     result = new TermQuery { Field = field, Value = value };
                 }
-
+                
             }
             return result;
         }
@@ -40,7 +40,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest
             var field = FieldForAnyFactory.Create(property);
 
             QueryBase result = !new ExistsQuery { Field = field };
-
+            
             return result;
         }
 

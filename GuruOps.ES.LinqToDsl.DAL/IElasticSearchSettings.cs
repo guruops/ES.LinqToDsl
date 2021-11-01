@@ -2,13 +2,13 @@ namespace GuruOps.ES.LinqToDsl.DAL
 {
     public interface IElasticSearchSettings
     {
-        public string EndpointUris { get; set; }
-        public ConnectionPoolType ConnectionPoolType { get; set; }
-        public int RequestTimeout { get; set; }
-        public string User { get; set; }
-        public string Password { get; set; }
-        public int RetryCount { get; set; }
-        public int PageSize { get; set; }
+        string EndpointUris { get; set; }
+        ConnectionPoolType ConnectionPoolType { get; set; }
+        int RequestTimeout { get; set; }
+        string User { get; set; }
+        string Password { get; set; }
+        int RetryCount { get; set; }
+        int PageSize { get; set; }
     }
 
     public enum ConnectionPoolType

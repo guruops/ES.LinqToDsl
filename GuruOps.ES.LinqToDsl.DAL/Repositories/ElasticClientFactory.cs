@@ -1,17 +1,17 @@
-﻿using Elasticsearch.Net;
+﻿using System;
+using System.Linq;
+using Elasticsearch.Net;
 using GuruOps.ES.LinqToDsl.Models;
 using Nest;
 using Nest.JsonNetSerializer;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System;
-using System.Linq;
 
 namespace GuruOps.ES.LinqToDsl.DAL.Repositories
 {
     public interface IElasticClientFactory
     {
-        ElasticClient Create<T>() where T : Document;
+        ElasticClient Create<T>() where T : DocumentBase;
 
         IElasticLowLevelClient CreateLowLevel(
             TimeSpan requestTimeout,
@@ -28,7 +28,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.Repositories
             _settings = settings;
             _indexNameResolver = indexNameResolver;
         }
-        public ElasticClient Create<T>() where T : Document
+        public ElasticClient Create<T>() where T : DocumentBase
         {
             var connectionSettings = CreateConnectionSettings(
                 _settings,
@@ -99,7 +99,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.Repositories
             }
 
             protected override JsonSerializerSettings CreateJsonSerializerSettings() =>
-                new()
+                new JsonSerializerSettings
                 {
                     ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                     Formatting = Formatting.None,

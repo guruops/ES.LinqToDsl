@@ -1,6 +1,6 @@
-﻿using Nest;
-using System;
+﻿using System;
 using System.Linq.Expressions;
+using Nest;
 
 namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest
 {
@@ -22,7 +22,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest
                     Expression.Constant(propertyName));
                 objectExpression = Expression.Convert(fieldExpression, typeof(object));
             }
-            if (propertyName == "id")
+            if (propertyName=="id")
             {
                 fieldExpression = Expression.Call(
                     typeof(SuffixExtensions),

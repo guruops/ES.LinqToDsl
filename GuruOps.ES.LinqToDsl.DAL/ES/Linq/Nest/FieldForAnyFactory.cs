@@ -1,11 +1,11 @@
-﻿using Nest;
-using Newtonsoft.Json.Converters;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.Json.Serialization;
+using Nest;
+using Newtonsoft.Json.Converters;
 
 namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest
 {
@@ -14,8 +14,8 @@ namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest
         public static Field Create(Expression property, MemberExpression node)
         {
             EnsureSupportableMember(node);
-            var fieldName = string.Join(".", property.ToString().Split('.').Skip(1));
-            fieldName = $"{fieldName}.{string.Join(".", node.ToString().Split('.').Skip(1))}";
+            var fieldName = string.Join(".",property.ToString().Split('.').Skip(1));
+            fieldName = $"{fieldName}.{string.Join(".",node.ToString().Split('.').Skip(1))}";
             fieldName = fieldName.ToCamelCase();
 
             if (IsStringProperty(node) || IsEnumerableString(node) || IsStringEnum(node))
@@ -28,7 +28,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest
 
         public static Field Create(Expression property)
         {
-            return new(Expression.Convert(property, typeof(object)));
+            return new Field(Expression.Convert(property, typeof(object)));
         }
 
         private static string ToCamelCase(this string name)
@@ -39,9 +39,9 @@ namespace GuruOps.ES.LinqToDsl.DAL.ES.Linq.Nest
                 var firstLetter = property.Substring(0, 1).ToLower();
                 results.Add($"{firstLetter}{property.Substring(1)}");
             }
-            return string.Join('.', results);
+            return string.Join(".", results);
         }
-
+        
         private static string GetPropertyNameInCamelCase(MemberExpression node)
         {
             var name = node.Member.Name;

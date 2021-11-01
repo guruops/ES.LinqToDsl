@@ -1,11 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
     <LangVersion>9</LangVersion>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
-    <Version>0.1.0</Version>
-    <AssemblyVersion>0.1.0.0</AssemblyVersion>
+    <Version>0.1.1</Version>
+    <AssemblyVersion>0.1.1.0</AssemblyVersion>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <Description>GuruOps.ES.LinqToDsl.DAL - Elasticsearch Linq to Dsl wrapper for Nest library</Description>
     <Authors>Invictus Gurus, LLC</Authors>
@@ -15,21 +14,16 @@
     <RepositoryUrl>https://github.com/guruops/ES.LinqToDsl.DAL</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>InvictusGurus GuruOps LinqToDsl</PackageTags>
-    <PackageReleaseNotes>0.1.0 - Initial release</PackageReleaseNotes>
+    <PackageReleaseNotes>0.1.1 - Initial release</PackageReleaseNotes>
     <NeutralLanguage>en</NeutralLanguage>
+    <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="GuruOps.ES.LinqToDsl.Models" Version="0.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="5.0.0" />
+    <PackageReference Include="GuruOps.ES.LinqToDsl.Models" Version="0.1.2" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="5.0.0" />
     <PackageReference Include="NEST" Version="7.15.0" />
     <PackageReference Include="NEST.JsonNetSerializer" Version="7.15.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Utilities" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,5 +1,5 @@
-﻿using Nest;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Nest;
 
 namespace GuruOps.ES.LinqToDsl.DAL.ES.Helpers
 {
@@ -43,7 +43,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.ES.Helpers
                 Field = new Field("_id"),
                 Size = int.MaxValue,
                 ShardSize = int.MaxValue,
-                Aggregations = topHitsAggregation && GetMaxAggregation(fieldSort) && GetPagedAggregation(itemCount, skip, fieldSort)
+                Aggregations =topHitsAggregation && GetMaxAggregation(fieldSort) && GetPagedAggregation(itemCount, skip, fieldSort)
             };
         }
 
