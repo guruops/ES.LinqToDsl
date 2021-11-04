@@ -1,7 +1,9 @@
+using System.Threading.Tasks;
+
 namespace GuruOps.ES.LinqToDsl.DAL
 {
     public interface IElasticSearchUserContext
     {
-        string UserId { get; }
+        Task<string> GetUserId();
     }
 }
