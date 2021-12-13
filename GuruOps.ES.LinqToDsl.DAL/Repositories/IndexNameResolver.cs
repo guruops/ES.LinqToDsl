@@ -7,7 +7,7 @@ namespace GuruOps.ES.LinqToDsl.DAL.Repositories
         public string GetIndexName(string indexName)
         {
             var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            if (string.IsNullOrEmpty(environment) || string.CompareOrdinal(environment.ToLower(), "production") == 0)
+            if (string.IsNullOrEmpty(environment))
             {
                 return indexName;
             }
