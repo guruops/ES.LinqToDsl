@@ -2,9 +2,9 @@
 
   <PropertyGroup>
     <LangVersion>7.3</LangVersion>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Version>0.1.2</Version>
-    <AssemblyVersion>0.1.2.0</AssemblyVersion>
+    <AssemblyVersion>0.1.3.0</AssemblyVersion>
     <PackageLicenseFile>LICENSE.md</PackageLicenseFile>
     <Description>GuruOps.ES.LinqToDsl.DAL - Elasticsearch Linq to Dsl wrapper for Nest library</Description>
     <Authors>Invictus Gurus, LLC</Authors>
@@ -14,9 +14,10 @@
     <RepositoryUrl>https://github.com/guruops/ES.LinqToDsl.DAL</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>InvictusGurus GuruOps LinqToDsl</PackageTags>
-    <PackageReleaseNotes>0.1.2 - IElasticSearchUserContext</PackageReleaseNotes>
+    <PackageReleaseNotes>0.1.4 - fix id</PackageReleaseNotes>
     <NeutralLanguage>en</NeutralLanguage>
     <TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
+    <PackageVersion>0.1.4</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
